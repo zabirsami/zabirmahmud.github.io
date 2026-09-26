@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zabir Mahmud — Energy Systems Analyst</title>
+  <meta name="description" content="Zabir Mahmud, Ph.D. — energy systems analyst specializing in capacity markets, grid planning and energy storage." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Hind+Siliguri:wght@600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+:root {
+  --bg: #0b1a33;
+  --bg-2: #10244a;
+  --card: rgba(255, 255, 255, 0.04);
+  --line: rgba(255, 255, 255, 0.12);
+  --text: #f5f3ee;
+  --muted: rgba(245, 243, 238, 0.62);
+  --accent: #e0893a;
+  --accent-ink: #1a1206;
+  --teal: #37b3cf;
+  --radius: 22px;
+  --pad: clamp(16px, 5vw, 72px);
+  --font: "Syne", system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+:root[data-theme="light"] {
+  --bg: #f5f1e8;
+  --bg-2: #ebe4d4;
+  --card: rgba(11, 26, 51, 0.04);
+  --line: rgba(11, 26, 51, 0.14);
+  --text: #0b1a33;
+  --muted: rgba(11, 26, 51, 0.62);
+  --accent: #c8651c;
+  --accent-ink: #fff8ef;
+  --teal: #08758f;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.5;
+  overflow-x: hidden;
+  transition: background .4s, color .4s;
+}
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 100; opacity: .06;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* NAV */
+.nav {
+  position: fixed; top: 16px; left: var(--pad); right: var(--pad);
+  display: flex; gap: 12px; z-index: 50;
+}
+.pill {
+  background: var(--accent); color: var(--accent-ink);
+  border-radius: 999px; height: 48px; display: flex; align-items: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+.nav-logo { padding: 0 26px; font-weight: 800; font-size: 18px; letter-spacing: .04em; }
+.nav-links { flex: 1; justify-content: center; gap: clamp(14px, 4vw, 56px); padding: 0 20px; font-size: 14px; font-weight: 600; }
+.nav-links a { position: relative; }
+.nav-links a::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 2px;
+  background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .3s;
+}
+.nav-links a:hover::after { transform: scaleX(1); }
+.theme-toggle { background: none; border: 0; color: inherit; font-size: 18px; cursor: pointer; }
+
+/* HERO */
+.hero {
+  min-height: 100vh; min-height: 100svh; position: relative;
+  padding: 130px var(--pad) 60px; display: flex; align-items: center; overflow: hidden;
+}
+.hero-text { position: relative; z-index: 2; max-width: 760px; }
+.greeting {
+  font-size: clamp(56px, 11vw, 150px); font-weight: 800; line-height: 1;
+  color: var(--accent); letter-spacing: -.02em; min-height: 1.15em;
+  font-family: var(--font), "Hind Siliguri", sans-serif;
+  transition: opacity .35s, filter .35s, transform .35s;
+}
+.greeting.out { opacity: 0; filter: blur(10px); transform: translateY(10px); }
+.iam { font-size: clamp(22px, 3.4vw, 40px); margin-top: 8px; font-weight: 500; }
+.iam .name { font-weight: 700; }
+.hero-lead { margin-top: 28px; font-size: clamp(17px, 1.8vw, 22px); max-width: 620px; color: var(--muted); }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 36px; }
+.btn {
+  padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 15px;
+  transition: transform .25s, background .25s, color .25s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-solid { background: var(--accent); color: var(--accent-ink); }
+.btn-ghost { border: 1px solid var(--line); }
+.btn-ghost:hover { background: var(--text); color: var(--bg); }
+
+.blob-wrap {
+  position: absolute; right: -6vw; bottom: -14vh; width: min(62vw, 720px);
+  aspect-ratio: 1; z-index: 1; pointer-events: none;
+}
+.blob { width: 100%; height: 100%; overflow: visible; }
+.scroll-hint {
+  position: absolute; left: 50%; bottom: 26px; width: 26px; height: 42px;
+  border: 2px solid var(--line); border-radius: 20px; z-index: 3;
+}
+.scroll-hint span {
+  position: absolute; left: 50%; top: 8px; width: 4px; height: 8px; margin-left: -2px;
+  border-radius: 2px; background: var(--accent); animation: hint 1.6s infinite;
+}
+@keyframes hint { 0% { opacity: 0; transform: translateY(0); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(14px); } }
+
+/* word reveal */
+.reveal-words .w { display: inline-block; opacity: .15; transition: opacity .5s, transform .5s; transform: translateY(6px); }
+.reveal-words.in .w { opacity: 1; transform: none; }
+
+/* SECTIONS */
+.section { padding: clamp(80px, 12vw, 150px) var(--pad); position: relative; }
+.eyebrow { font-family: var(--mono); font-size: 13px; letter-spacing: .12em; color: var(--teal); margin-bottom: 14px; }
+.section-title {
+  font-size: clamp(40px, 7vw, 96px); font-weight: 800; line-height: 1; letter-spacing: -.02em;
+  text-transform: uppercase; margin-bottom: clamp(36px, 5vw, 64px);
+}
+.fade-up { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
+.fade-up.in { opacity: 1; transform: none; }
+
+/* CARDS */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+.card {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 34px 30px; position: relative; overflow: hidden; transition: transform .4s, border-color .4s;
+}
+.card::before {
+  content: ""; position: absolute; inset: auto -40% -60% auto; width: 80%; aspect-ratio: 1;
+  background: radial-gradient(circle, var(--accent), transparent 65%); opacity: 0; transition: opacity .5s;
+}
+.card:hover { transform: translateY(-6px); border-color: var(--accent); }
+.card:hover::before { opacity: .22; }
+.card-num { font-family: var(--mono); font-size: 13px; color: var(--muted); }
+.card h3 { font-size: 28px; margin: 40px 0 6px; font-weight: 700; }
+.card .tags { font-family: var(--mono); font-size: 12px; letter-spacing: .08em; color: var(--accent); }
+.card p { margin-top: 18px; color: var(--muted); position: relative; }
+
+/* STACKS */
+.stacks { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+.stack h3 { font-family: var(--mono); font-size: 14px; letter-spacing: .12em; color: var(--muted); margin-bottom: 18px; font-weight: 500; }
+.chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip {
+  padding: 10px 18px; border: 1px solid var(--line); border-radius: 999px; font-size: 15px;
+  transition: background .25s, color .25s, border-color .25s, transform .25s;
+}
+.chip:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); transform: translateY(-2px) rotate(-2deg); }
+.stack-note { margin-top: 16px; font-size: 14px; color: var(--muted); font-style: italic; }
+
+/* PROJECTS */
+.projects { display: grid; gap: 0; border-top: 1px solid var(--line); }
+.project {
+  display: grid; grid-template-columns: 70px 1fr auto; gap: 24px; align-items: center;
+  padding: 34px 0; border-bottom: 1px solid var(--line); position: relative; transition: padding .4s;
+}
+.project::before {
+  content: ""; position: absolute; inset: 0; background: var(--accent); transform: scaleY(0);
+  transform-origin: bottom; transition: transform .45s cubic-bezier(.7,0,.2,1); z-index: -1; border-radius: 12px;
+}
+.project:hover { padding-left: 22px; padding-right: 22px; color: var(--accent-ink); }
+.project:hover::before { transform: scaleY(1); }
+.project:hover .project-meta, .project:hover .project-num { color: var(--accent-ink); }
+.project-num { font-family: var(--mono); color: var(--muted); }
+.project h3 { font-size: clamp(24px, 3.6vw, 44px); font-weight: 700; line-height: 1.1; }
+.project p { color: inherit; opacity: .75; margin-top: 6px; max-width: 640px; }
+.project-meta { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; letter-spacing: .06em; }
+.project-arrow { display: block; font-size: 28px; margin-top: 6px; transition: transform .3s; }
+.project:hover .project-arrow { transform: rotate(-45deg); }
+
+/* TIMELINE */
+.timeline { position: relative; padding-left: 34px; border-left: 1px solid var(--line); max-width: 900px; }
+.tl-item { position: relative; padding-bottom: 54px; }
+.tl-item:last-child { padding-bottom: 0; }
+.tl-item::before {
+  content: ""; position: absolute; left: -41px; top: 8px; width: 13px; height: 13px;
+  border-radius: 50%; background: var(--bg); border: 2px solid var(--accent);
+}
+.tl-item.current::before { background: var(--accent); box-shadow: 0 0 0 6px rgba(224,137,58,.2); }
+.tl-date { font-family: var(--mono); font-size: 13px; color: var(--teal); letter-spacing: .06em; }
+.tl-item h3 { font-size: clamp(22px, 2.6vw, 30px); margin-top: 6px; }
+.tl-org { color: var(--accent); font-weight: 600; }
+.tl-item p { color: var(--muted); margin-top: 10px; max-width: 680px; }
+
+/* PUBLICATIONS */
+.pubs { border-top: 1px solid var(--line); max-width: 1100px; }
+.pub { border-bottom: 1px solid var(--line); }
+.pub > a, .pub:not(:has(> a)) { display: grid; grid-template-columns: 70px 1fr; gap: 24px; padding: 26px 0; }
+.pub > a:hover h3 { color: var(--accent); }
+.pub-year { font-family: var(--mono); color: var(--teal); font-size: 14px; padding-top: 4px; }
+.pub h3 { font-size: clamp(18px, 2vw, 24px); font-weight: 600; line-height: 1.3; transition: color .3s; }
+.pub p { color: var(--muted); margin-top: 6px; font-size: 15px; }
+.pub strong { color: var(--text); }
+.pubs-note { margin-top: 24px; color: var(--muted); font-size: 15px; }
+.hero-title { font-family: var(--mono); font-size: clamp(12px, 1.3vw, 15px); letter-spacing: .1em; text-transform: uppercase; color: var(--teal); margin-top: 10px; }
+
+/* STORY */
+.story-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 16px; }
+.link-arrow { color: var(--accent); font-weight: 600; border-bottom: 1px solid currentColor; }
+.story { display: grid; gap: 28px; max-width: 980px; }
+.story p { font-size: clamp(20px, 2.4vw, 30px); line-height: 1.4; font-weight: 500; }
+.story strong { color: var(--accent); font-weight: 700; }
+
+/* MARQUEE */
+.marquee { overflow: hidden; border-block: 1px solid var(--line); padding: 26px 0; background: var(--bg-2); }
+.marquee-track { display: flex; gap: 48px; width: max-content; animation: marquee 40s linear infinite; }
+.marquee-track span { font-size: clamp(24px, 3vw, 40px); font-weight: 800; white-space: nowrap; display: flex; align-items: center; gap: 48px; }
+.marquee-track span::after { content: "✦"; color: var(--accent); font-size: .6em; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* CONTACT */
+.contact { text-align: center; }
+.contact-title { font-size: clamp(36px, 6.5vw, 88px); font-weight: 800; line-height: 1.05; letter-spacing: -.02em; }
+.accent { color: var(--accent); }
+.contact-email {
+  display: inline-block; margin-top: 40px; font-size: clamp(18px, 2.6vw, 30px); font-weight: 600;
+  padding: 18px 34px; border-radius: 999px; border: 1px solid var(--line); transition: background .3s, color .3s;
+  word-break: break-all;
+}
+.contact-email:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+
+/* FOOTER */
+.footer { padding: 60px var(--pad) 30px; border-top: 1px solid var(--line); }
+.footer-name {
+  font-size: clamp(56px, 15vw, 240px); font-weight: 800; line-height: .9; letter-spacing: -.03em;
+  text-transform: uppercase; color: var(--accent);
+}
+.footer-name span { display: block; }
+.footer-name span:last-child { color: var(--text); }
+.footer-grid { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 30px; margin-top: 50px; }
+.footer-nav a, .footer-social a { font-size: 22px; font-weight: 600; display: inline-flex; gap: 10px; align-items: baseline; padding: 4px 0; }
+.footer-nav a:hover, .footer-social a:hover { color: var(--accent); }
+.footer-nav span { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.copyright { margin-top: 50px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+
+@media (max-width: 640px) {
+  .pub > a, .pub:not(:has(> a)) { grid-template-columns: 1fr; gap: 4px; }
+  .nav-links a[href="#research"] { display: none; }
+  .nav-logo { padding: 0 18px; }
+  .nav-links { font-size: 13px; gap: 14px; padding: 0 14px; }
+  .blob-wrap { width: 90vw; right: -30vw; bottom: -8vh; opacity: .85; }
+  .project { grid-template-columns: 1fr; gap: 8px; }
+  .project-meta { text-align: left; }
+  .project-num { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .fade-up, .reveal-words .w { opacity: 1; transform: none; }
+}
+
+</style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- NAV -->
+  <header class="nav">
+    <a href="#top" class="nav-logo pill" aria-label="Home" id="logo">ZM</a>
+    <nav class="nav-links pill">
+      <a href="#work">Work</a>
+      <a href="#research">Research</a>
+      <a href="#journey">Journey</a>
+      <a href="#contact">Let's talk</a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg></button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-text">
+        <h1 class="greeting" id="greeting">Hello</h1>
+        <p class="iam">I am <span class="name" id="scrambleName" data-text="Zabir Mahmud">Zabir Mahmud</span></p>
+        <p class="hero-title" id="heroTitle"></p>
+        <p class="hero-lead reveal-words" id="heroLead"></p>
+        <div class="hero-cta">
+          <a href="#work" class="btn btn-solid">View my Work</a>
+          <a href="#journey" class="btn btn-ghost">View my Experience</a>
+        </div>
+      </div>
+      <div class="blob-wrap" aria-hidden="true">
+        <svg class="blob" viewBox="0 0 400 400">
+          <defs>
+            <radialGradient id="blobGrad" cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stop-color="#f4a261" />
+              <stop offset="55%" stop-color="#d9622b" />
+              <stop offset="100%" stop-color="#8f3413" />
+            </radialGradient>
+            <filter id="blobShadow"><feGaussianBlur stdDeviation="18" /></filter>
+          </defs>
+          <path id="blobShadowPath" fill="#000" opacity=".35" filter="url(#blobShadow)" transform="translate(12 22)" />
+          <path id="blobPath" fill="url(#blobGrad)" />
+        </svg>
+      </div>
+      <a href="#expertise" class="scroll-hint" aria-label="Scroll down"><span></span></a>
+    </section>
+
+    <!-- EXPERTISE -->
+    <section class="section" id="expertise">
+      <p class="eyebrow">[ — E ] WHAT I DO</p>
+      <h2 class="section-title">My Expertise</h2>
+      <div class="cards" id="expertiseCards"></div>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills">
+      <p class="eyebrow">[ — T ] SKILLS</p>
+      <h2 class="section-title">My Knowledge Stack</h2>
+      <div class="stacks" id="stacks"></div>
+    </section>
+
+    <!-- WORK -->
+    <section class="section" id="work">
+      <p class="eyebrow">[ — P ] SELECTED WORK</p>
+      <h2 class="section-title">Highlights</h2>
+      <div class="projects" id="projects"></div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section class="section" id="research">
+      <p class="eyebrow">[ — R ] RESEARCH</p>
+      <h2 class="section-title">Publications</h2>
+      <ol class="pubs" id="pubs"></ol>
+      <p class="pubs-note" id="pubsNote"></p>
+    </section>
+
+    <!-- JOURNEY -->
+    <section class="section" id="journey">
+      <p class="eyebrow">[ — J ] JOURNEY</p>
+      <h2 class="section-title">Experience</h2>
+      <ol class="timeline" id="timeline"></ol>
+    </section>
+
+    <!-- STORY -->
+    <section class="section" id="story">
+      <p class="eyebrow">[ — W ] WHO I AM</p>
+      <div class="story-head">
+        <h2 class="section-title">My Story</h2>
+        <a href="#contact" class="link-arrow">Get in touch →</a>
+      </div>
+      <div class="story" id="story-body"></div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee" aria-hidden="true"><div class="marquee-track" id="marquee"></div></div>
+
+    <!-- CONTACT -->
+    <section class="section contact" id="contact">
+      <p class="eyebrow">[ — C ] CONTACT</p>
+      <h2 class="contact-title">Let's talk <span class="accent">markets</span>,<br />grids &amp; storage.</h2>
+      <a class="contact-email" id="contactEmail" href="#"></a>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-name" id="footerName"></div>
+    <div class="footer-grid">
+      <ul class="footer-nav">
+        <li><a href="#work">Work <span>01</span></a></li>
+        <li><a href="#research">Research <span>02</span></a></li>
+        <li><a href="#journey">Journey <span>03</span></a></li>
+        <li><a href="#contact">Contact <span>04</span></a></li>
+      </ul>
+      <ul class="footer-social" id="social"></ul>
+    </div>
+    <p class="copyright">© <span id="year"></span> <span id="copyName"></span></p>
+  </footer>
+
+  <script>
+/* =========================================================
+   EDIT YOUR CONTENT HERE
+   Everything on the page is generated from this object.
+   ========================================================= */
+const CONFIG = {
+  name: "Zabir Mahmud",
+  title: "Energy Systems Analyst · Electricity Market & Policy",
+  email: "zabirsami@gmail.com",
+  greetings: ["Hello", "স্বাগতম", "Hola", "Bonjour", "Ciao", "こんにちは", "Salaam"],
+
+  heroLead:
+    "I build the models that help utilities, ISOs and investors plan renewables-driven power grids — capacity expansion, capacity markets, battery dispatch and resource adequacy. Explore my work and let's solve your next energy challenge.",
+
+  expertise: [
+    { title: "Market Modeling", tags: "PJM, MISO, SPP, ERCOT", text: "Electricity- and capacity-market models for market outlooks, asset valuation and client strategy — including Monte Carlo capacity-auction forecasts." },
+    { title: "Grid Planning", tags: "RESOLVE, IRP, CAPACITY EXPANSION", text: "Capacity expansion, production cost and resource adequacy analysis that quantifies storage needs and renewable integration constraints." },
+    { title: "Energy Storage", tags: "DISPATCH, REVENUE, LCOS", text: "Battery revenue and dispatch optimization across energy and ancillary markets, plus techno-economic screening of long-duration storage." },
+  ],
+
+  stacks: [
+    { title: "MODELING & ANALYSIS", items: ["Capacity Expansion", "Integrated Resource Planning", "Production Cost Modeling", "Resource Adequacy", "Capacity Accreditation (UCAP/ELCC)", "Grid Reliability", "Forecasting", "Optimization", "Econometrics", "Monte Carlo Simulation", "Techno-economic Analysis"], note: "" },
+    { title: "TOOLS", items: ["Python", "R", "Excel", "MATLAB", "RESOLVE", "Git/GitHub", "PVWatts", "NSRDB", "NREL WIND Toolkit", "SAM", "SimaPro"], note: "" },
+    { title: "DOMAINS", items: ["Grid & Resource Planning", "Capacity Markets", "Energy Storage", "Renewable Integration", "Retail Rates"], note: "" },
+  ],
+
+  // Highlights of your work. Add a url to make an item clickable.
+  projects: [
+    { title: "Capacity-Market Forecasting", text: "Monte Carlo and scenario frameworks for PJM and MISO auctions — 100% accuracy on PJM clearing prices and 99% on cleared MWs over the last three auctions; 90%+ on MISO outlooks.", meta: "PYTHON · GABEL ASSOCIATES" },
+    { title: "Battery Dispatch & Revenue", text: "Energy and ancillary-service optimization for 1+ GW of battery projects across multiple markets, with state-of-charge and efficiency constraints.", meta: "OPTIMIZATION · GABEL ASSOCIATES" },
+    { title: "Faster Capacity Expansion", text: "A computation-reduction technique for grid capacity expansion models, validated for accuracy, plus a simplified method to estimate storage needs.", meta: "CEC-FUNDED RESEARCH · UC MERCED" },
+    { title: "California Winter Wind", text: "Solar and onshore/offshore wind profile analysis uncovering the drivers of California's winter wind dominance and seasonal reliability challenges.", meta: "CEC-FUNDED RESEARCH · UC MERCED" },
+    { title: "Front-of-the-Meter Storage", text: "White paper on U.S. front-of-the-meter battery storage — revenue stacking, deployment barriers and IRA policy impacts — plus an LCOS model.", meta: "E SOURCE" },
+  ],
+
+  // Selected publications. Add a url (e.g. DOI link) to make one clickable.
+  publications: [
+    { title: "Path to Future Markets: Quantifying Long-Duration Energy Storage Competitiveness", authors: "F. ZareAfifi, Z. Mahmud, S. Kurtz", venue: "iScience", year: "2026" },
+    { title: "Effect of Solar Panel Orientation and EV Charging Profile on Grid Design", authors: "Z. Mahmud, S. Kurtz", venue: "Renewable Energy", year: "2024" },
+    { title: "Diurnal, Physics-Based Strategy for Computationally Efficient Capacity-Expansion Optimizations for Solar-Dominated Grids", authors: "F. ZareAfifi, Z. Mahmud, S. Kurtz", venue: "Energy", year: "2023" },
+    { title: "Hierarchical Approach to Evaluating Storage Requirements for Renewable-Energy-Driven Grids", authors: "Z. Mahmud, K. Shiraishi, P. A. Sánchez-Pérez, S. Kurtz", venue: "iScience", year: "2023" },
+    { title: "Geographical Variability of Summer- and Winter-Dominant Onshore Wind", authors: "Z. Mahmud, K. Shiraishi, M. Y. Abido, D. Millstein, S. Kurtz", venue: "Journal of Renewable and Sustainable Energy", year: "2022" },
+    { title: "Seasonal Challenges for a California Renewable-Energy-Driven Grid", authors: "M. Y. Abido, Z. Mahmud, P. A. Sánchez-Pérez, S. Kurtz", venue: "iScience", year: "2022" },
+  ],
+  publicationsNote: "Full list of 13 peer-reviewed publications (journal articles, conference papers, book chapters) on Google Scholar or on request.",
+
+  // First item is highlighted as current
+  journey: [
+    { date: "APR 2025 — PRESENT", role: "Energy Market & Policy Analyst", org: "Gabel Associates", text: "Quantitative electricity- and capacity-market models across PJM, MISO, SPP and ERCOT; capacity-auction forecasting; battery and natural-gas storage valuation; and client-facing market outlooks that translate ISO/RTO rule changes into price and reliability impacts." },
+    { date: "MAY 2024 — APR 2025", role: "Graduate Research Assistant", org: "UC Office of the President-Funded Project", text: "Quantified how groundwater depth, crop selection and spatiotemporal variability drive acreage irrigated via agrivoltaic electricity." },
+    { date: "MAY 2024 — AUG 2024", role: "Energy Storage Summer Intern", org: "EPRI", text: "Identified cost-reduction pathways for bulk energy storage and screened emerging non-battery storage technologies for TEPCO on cost, safety, performance, maturity and supply chain." },
+    { date: "NOV 2023 — MAY 2024", role: "Energy Storage Research Intern", org: "E Source", text: "Authored a white paper on U.S. front-of-the-meter battery storage; built battery market-forecasting methods and supported interconnection-queue, chemistry-trend and LCOS work." },
+    { date: "JAN 2021 — MAY 2024", role: "Graduate Research Assistant", org: "California Energy Commission-Funded Project", text: "Capacity expansion model speed-ups, storage-need estimation, seasonal reliability diagnosis, wind/solar profile analysis, and automated data pipelines from NSRDB, WIND Toolkit, PVWatts and SAM." },
+    { date: "JAN 2021 — MAY 2025", role: "Ph.D. & M.S., Environmental Systems (Energy Systems Engineering)", org: "UC Merced", text: "Dissertation: Effect of Renewable Resource Portfolios on Storage Needs in a California Renewables-driven Grid. Thesis: Impact of EV Charging Schedule on Storage Requirements for a Renewables-driven Grid in California." },
+    { date: "APR 2014 — OCT 2018", role: "B.S., Mechanical Engineering", org: "BUET", text: "Bangladesh University of Engineering and Technology." },
+  ],
+
+  // Wrap words in **double asterisks** to highlight them
+  story: [
+    "I started as a **mechanical engineer** in Bangladesh, fascinated by how energy moves through the systems we depend on.",
+    "That curiosity took me to UC Merced, where I spent six years on one question: how much **storage** does a renewables-driven grid like California's really need? That work became a Ph.D. and a dozen peer-reviewed papers.",
+    "Today at Gabel Associates I turn that research into **market intelligence** — forecasting capacity auctions, valuing storage, and helping clients make sense of fast-changing power markets.",
+  ],
+
+  marquee: ["CAPACITY MARKETS", "PJM", "MISO", "ERCOT", "SPP", "ENERGY STORAGE", "RESOURCE ADEQUACY", "RESOLVE", "PYTHON", "MONTE CARLO", "RENEWABLE INTEGRATION"],
+
+  social: [
+    { label: "LinkedIn", url: "https://www.linkedin.com/in/zabir-mahmud" },
+    { label: "Google Scholar", url: "https://scholar.google.com/scholar?q=%22Zabir+Mahmud%22" },
+    { label: "Email", url: "mailto:zabirsami@gmail.com" },
+  ],
+};
+
+/* ========================================================= */
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- render ---------- */
+function render() {
+  const c = CONFIG;
+  document.title = `${c.name} — ${c.title.split(" · ")[0]}`;
+  $("#heroTitle").textContent = c.title;
+  const initials = c.name.split(/\s+/).map((p) => p[0]).join("").slice(0, 2).toUpperCase();
+  $("#logo").textContent = initials;
+  $("#scrambleName").dataset.text = c.name;
+  $("#scrambleName").textContent = c.name;
+
+  $("#heroLead").innerHTML = c.heroLead.split(" ").map((w) => `<span class="w">${esc(w)}</span>`).join(" ");
+
+  $("#expertiseCards").innerHTML = c.expertise.map((e, i) => `
+    <article class="card fade-up">
+      <span class="card-num">0${i + 1}</span>
+      <h3>${esc(e.title)}</h3>
+      <div class="tags">${esc(e.tags)}</div>
+      <p>${esc(e.text)}</p>
+    </article>`).join("");
+
+  $("#stacks").innerHTML = c.stacks.map((s) => `
+    <div class="stack fade-up">
+      <h3>${esc(s.title)}</h3>
+      <div class="chips">${s.items.map((i) => `<span class="chip">${esc(i)}</span>`).join("")}</div>
+      ${s.note ? `<p class="stack-note">${esc(s.note)}</p>` : ""}
+    </div>`).join("");
+
+  $("#projects").innerHTML = c.projects.map((p, i) => `
+    <${p.url ? "a" : "div"} class="project fade-up" ${p.url ? `href="${esc(p.url)}" target="_blank" rel="noopener"` : ""}>
+      <span class="project-num">0${i + 1}</span>
+      <div><h3>${esc(p.title)}</h3><p>${esc(p.text)}</p></div>
+      <div class="project-meta">${esc(p.meta)}${p.url ? '<span class="project-arrow">→</span>' : ""}</div>
+    </${p.url ? "a" : "div"}>`).join("");
+
+
+  $("#pubs").innerHTML = c.publications.map((p) => {
+    const inner = `<span class="pub-year">${esc(p.year)}</span><div><h3>${esc(p.title)}</h3><p>${esc(p.authors).replace("Z. Mahmud", "<strong>Z. Mahmud</strong>")} · <em>${esc(p.venue)}</em></p></div>`;
+    return p.url ? `<li class="pub fade-up"><a href="${esc(p.url)}" target="_blank" rel="noopener">${inner}</a></li>` : `<li class="pub fade-up">${inner}</li>`;
+  }).join("");
+  $("#pubsNote").textContent = c.publicationsNote || "";
+
+  $("#timeline").innerHTML = c.journey.map((j, i) => `
+    <li class="tl-item fade-up ${i === 0 ? "current" : ""}">
+      <span class="tl-date">${esc(j.date)}</span>
+      <h3>${esc(j.role)} <span class="tl-org">@ ${esc(j.org)}</span></h3>
+      <p>${esc(j.text)}</p>
+    </li>`).join("");
+
+  // split on ** so odd segments are bold, then wrap each word for the reveal
+  $("#story-body").innerHTML = c.story.map((para) => {
+    const words = esc(para).split("**").flatMap((seg, i) =>
+      seg.split(/\s+/).filter(Boolean).map((w) => (i % 2 ? `<strong>${w}</strong>` : w))
+    ).reduce((acc, w) => (/^[,.;:!?)]/.test(w) && acc.length ? (acc[acc.length - 1] += w) : acc.push(w), acc), []);
+    return `<p class="reveal-words">${words.map((w) => `<span class="w">${w}</span>`).join(" ")}</p>`;
+  }).join("");
+
+  const m = c.marquee.map((t) => `<span>${esc(t)}</span>`).join("");
+  $("#marquee").innerHTML = m + m;
+
+  $("#contactEmail").textContent = c.email;
+  $("#contactEmail").href = `mailto:${c.email}`;
+  $("#footerName").innerHTML = c.name.split(/\s+/).map((p) => `<span>${esc(p)}</span>`).join("");
+  $("#social").innerHTML = c.social.map((s) => `<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.label)} ↗</a></li>`).join("");
+  $("#year").textContent = new Date().getFullYear();
+  $("#copyName").textContent = c.name;
+}
+
+/* ---------- greeting cycle ---------- */
+function cycleGreetings() {
+  const el = $("#greeting");
+  let i = 0;
+  setInterval(() => {
+    el.classList.add("out");
+    setTimeout(() => {
+      i = (i + 1) % CONFIG.greetings.length;
+      el.textContent = CONFIG.greetings[i];
+      el.classList.remove("out");
+    }, 350);
+  }, 2200);
+}
+
+/* ---------- scramble text ---------- */
+function scramble(el, duration = 1400) {
+  const target = el.dataset.text;
+  const glyphs = "!<>-_\\/[]{}—=+*^?#$%&░▒▓01X";
+  const start = performance.now();
+  function frame(now) {
+    const p = Math.min(1, (now - start) / duration);
+    const revealed = Math.floor(p * target.length);
+    let out = "";
+    for (let k = 0; k < target.length; k++) {
+      if (k < revealed || target[k] === " ") out += target[k];
+      else out += glyphs[(Math.random() * glyphs.length) | 0];
+    }
+    el.textContent = out;
+    if (p < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- morphing blob ---------- */
+function blob() {
+  const path = $("#blobPath"), shadow = $("#blobShadowPath");
+  const N = 9, cx = 200, cy = 200, R = 150;
+  const seeds = Array.from({ length: N }, () => Math.random() * Math.PI * 2);
+  let mx = 0, my = 0;
+  addEventListener("pointermove", (e) => {
+    mx = (e.clientX / innerWidth - 0.5) * 2;
+    my = (e.clientY / innerHeight - 0.5) * 2;
+  });
+  function pts(t) {
+    return seeds.map((s, i) => {
+      const a = (i / N) * Math.PI * 2;
+      const r = R + Math.sin(t * 0.9 + s) * 18 + Math.cos(t * 0.6 + s * 2) * 12;
+      return [cx + Math.cos(a) * r + mx * 12, cy + Math.sin(a) * r + my * 12];
+    });
+  }
+  function d(p) {
+    // closed Catmull-Rom → cubic Bézier
+    let s = `M${p[0][0]},${p[0][1]}`;
+    for (let i = 0; i < p.length; i++) {
+      const p0 = p[(i - 1 + p.length) % p.length], p1 = p[i], p2 = p[(i + 1) % p.length], p3 = p[(i + 2) % p.length];
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6];
+      const c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      s += `C${c1[0]},${c1[1]} ${c2[0]},${c2[1]} ${p2[0]},${p2[1]}`;
+    }
+    return s + "Z";
+  }
+  function tick(now) {
+    const shape = d(pts(now / 1000));
+    path.setAttribute("d", shape);
+    shadow.setAttribute("d", shape);
+    if (!reduced) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+/* ---------- scroll reveals ---------- */
+function reveals() {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      if (el.classList.contains("reveal-words")) {
+        el.querySelectorAll(".w").forEach((w, i) => (w.style.transitionDelay = `${i * 25}ms`));
+      }
+      el.classList.add("in");
+      io.unobserve(el);
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll(".fade-up, .reveal-words").forEach((el) => io.observe(el));
+}
+
+/* ---------- theme ---------- */
+function theme() {
+  const root = document.documentElement;
+  let saved = null;
+  try { saved = localStorage.getItem("theme"); } catch (_) {}
+  if (saved) root.dataset.theme = saved;
+  $("#themeToggle").addEventListener("click", () => {
+    const next = root.dataset.theme === "light" ? "dark" : "light";
+    root.dataset.theme = next;
+    try { localStorage.setItem("theme", next); } catch (_) {}
+  });
+}
+
+render();
+theme();
+blob();
+reveals();
+if (!reduced) { cycleGreetings(); scramble($("#scrambleName")); }
+
+</script>
+</body>
+</html>
