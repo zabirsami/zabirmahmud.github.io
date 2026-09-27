@@ -179,18 +179,30 @@ ul, ol { list-style: none; }
 .project:hover .project-arrow { transform: rotate(-45deg); }
 
 /* TIMELINE */
-.timeline { position: relative; padding-left: 34px; border-left: 1px solid var(--line); max-width: 900px; }
-.tl-item { position: relative; padding-bottom: 54px; }
-.tl-item:last-child { padding-bottom: 0; }
+.sub-title { font-family: var(--mono); font-size: 14px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); font-weight: 500; margin-bottom: 26px; }
+.edu-title { margin-top: 80px; }
+.timeline { position: relative; padding-left: 34px; border-left: 1px solid var(--line); max-width: 980px; }
+.tl-item { position: relative; padding: 26px 28px; margin-bottom: 22px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); transition: border-color .3s; }
+.tl-item:hover { border-color: var(--accent); }
 .tl-item::before {
-  content: ""; position: absolute; left: -41px; top: 8px; width: 13px; height: 13px;
+  content: ""; position: absolute; left: -42px; top: 34px; width: 13px; height: 13px;
   border-radius: 50%; background: var(--bg); border: 2px solid var(--accent);
 }
 .tl-item.current::before { background: var(--accent); box-shadow: 0 0 0 6px rgba(224,137,58,.2); }
-.tl-date { font-family: var(--mono); font-size: 13px; color: var(--teal); letter-spacing: .06em; }
-.tl-item h3 { font-size: clamp(22px, 2.6vw, 30px); margin-top: 6px; }
-.tl-org { color: var(--accent); font-weight: 600; }
-.tl-item p { color: var(--muted); margin-top: 10px; max-width: 680px; }
+.tl-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
+.tl-item h3 { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.15; color: var(--accent); }
+.tl-role { font-weight: 600; font-size: 17px; margin-top: 4px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.tl-type { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); color: var(--teal); font-weight: 500; }
+.tl-date { font-family: var(--mono); font-size: 13px; color: var(--teal); letter-spacing: .04em; white-space: nowrap; padding-top: 6px; }
+.tl-points { margin-top: 14px; display: grid; gap: 8px; }
+.tl-points li { color: var(--muted); padding-left: 20px; position: relative; max-width: 760px; }
+.tl-points li::before { content: "▸"; position: absolute; left: 0; color: var(--accent); }
+.edu { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; max-width: 1014px; }
+.edu-card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px; }
+.edu-card h4 { font-size: 21px; margin-top: 8px; line-height: 1.2; }
+.edu-field { color: var(--text); opacity: .8; margin-top: 4px; }
+.edu-school { color: var(--accent); font-weight: 700; margin-top: 10px; }
+.edu-card p { color: var(--muted); font-size: 14px; margin-top: 10px; }
 
 /* PUBLICATIONS */
 .pubs { border-top: 1px solid var(--line); max-width: 1100px; }
@@ -226,6 +238,9 @@ ul, ol { list-style: none; }
 .lightbox figcaption { color: #f5f3ee; margin-top: 16px; font-size: 18px; font-weight: 600; }
 .lb-close { position: absolute; top: 18px; right: 24px; background: none; border: 0; color: #f5f3ee; font-size: 40px; cursor: pointer; line-height: 1; }
 @media (max-width: 640px) {
+  .timeline { padding-left: 20px; }
+  .tl-item { padding: 20px 18px; }
+  .tl-item::before { left: -27px; top: 28px; }
   .gallery { columns: auto; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 18px; padding: 10px 4px 30px; margin: 0 calc(-1 * var(--pad)); padding-inline: var(--pad); }
   .polaroid { flex: 0 0 78%; scroll-snap-align: center; margin: 0; }
   .polaroid img, .polaroid.tall img { aspect-ratio: 4/3.4; }
@@ -366,7 +381,10 @@ ul, ol { list-style: none; }
     <section class="section" id="journey">
       <p class="eyebrow">[ — J ] JOURNEY</p>
       <h2 class="section-title">Experience</h2>
+      <h3 class="sub-title">Work</h3>
       <ol class="timeline" id="timeline"></ol>
+      <h3 class="sub-title edu-title">Education</h3>
+      <div class="edu" id="edu"></div>
     </section>
 
     <!-- STORY -->
@@ -464,15 +482,30 @@ const CONFIG = {
   ],
   publicationsNote: "Full list of 13 peer-reviewed publications (journal articles, conference papers, book chapters) on Google Scholar or on request.",
 
-  // First item is highlighted as current
+  // WORK: newest first. The first item is highlighted as current.
+  // "type" shows as a small tag. Each "points" entry is one bullet.
   journey: [
-    { date: "APR 2025 — PRESENT", role: "Energy Market & Policy Analyst", org: "Gabel Associates", text: "Quantitative electricity- and capacity-market models across PJM, MISO, SPP and ERCOT; capacity-auction forecasting; battery and natural-gas storage valuation; and client-facing market outlooks that translate ISO/RTO rule changes into price and reliability impacts." },
-    { date: "MAY 2024 — APR 2025", role: "Graduate Research Assistant", org: "UC Office of the President-Funded Project", text: "Quantified how groundwater depth, crop selection and spatiotemporal variability drive acreage irrigated via agrivoltaic electricity." },
-    { date: "MAY 2024 — AUG 2024", role: "Energy Storage Summer Intern", org: "EPRI", text: "Identified cost-reduction pathways for bulk energy storage and screened emerging non-battery storage technologies for TEPCO on cost, safety, performance, maturity and supply chain." },
-    { date: "NOV 2023 — MAY 2024", role: "Energy Storage Research Intern", org: "E Source", text: "Authored a white paper on U.S. front-of-the-meter battery storage; built battery market-forecasting methods and supported interconnection-queue, chemistry-trend and LCOS work." },
-    { date: "JAN 2021 — MAY 2024", role: "Graduate Research Assistant", org: "California Energy Commission-Funded Project", text: "Capacity expansion model speed-ups, storage-need estimation, seasonal reliability diagnosis, wind/solar profile analysis, and automated data pipelines from NSRDB, WIND Toolkit, PVWatts and SAM." },
-    { date: "JAN 2021 — MAY 2025", role: "Ph.D. & M.S., Environmental Systems (Energy Systems Engineering)", org: "UC Merced", text: "Dissertation: Effect of Renewable Resource Portfolios on Storage Needs in a California Renewables-driven Grid. Thesis: Impact of EV Charging Schedule on Storage Requirements for a Renewables-driven Grid in California." },
-    { date: "APR 2014 — OCT 2018", role: "B.S., Mechanical Engineering", org: "BUET", text: "Bangladesh University of Engineering and Technology." },
+    { org: "Gabel Associates", role: "Energy Market & Policy Analyst", type: "Full-time", date: "Apr 2025 – Present", points: [
+      "Build electricity- and capacity-market models across PJM, MISO, SPP and ERCOT for market outlooks, asset valuation and client strategy.",
+      "Capacity-market forecasts matched PJM clearing prices and hit 99% accuracy on cleared MWs over the last three auctions; 90%+ accuracy on MISO outlooks.",
+      "Model battery storage revenue and dispatch for 1+ GW of projects, and value natural-gas storage strategies.",
+    ] },
+    { org: "UC Merced", role: "Graduate Research Assistant", type: "Research", date: "Jan 2021 – Apr 2025", points: [
+      "California Energy Commission project (2021–2024): sped up grid capacity expansion models, estimated storage needs, and diagnosed seasonal reliability challenges in a renewables-driven California grid.",
+      "UC Office of the President project (2024–2025): quantified how groundwater depth, crop choice and variability drive acreage irrigated by agrivoltaic electricity.",
+    ] },
+    { org: "EPRI", role: "Energy Storage Summer Intern", type: "Internship", date: "May – Aug 2024", points: [
+      "Identified cost-reduction pathways for bulk energy storage and screened emerging non-battery storage technologies for TEPCO.",
+    ] },
+    { org: "E Source", role: "Energy Storage Research Intern", type: "Internship", date: "Nov 2023 – May 2024", points: [
+      "Authored a white paper on U.S. front-of-the-meter battery storage, and built battery market forecasts and an LCOS model.",
+    ] },
+  ],
+
+  education: [
+    { degree: "Ph.D., Environmental Systems", field: "Energy Systems Engineering", school: "UC Merced", date: "2021 – 2025", note: "Dissertation: Effect of Renewable Resource Portfolios on Storage Needs in a California Renewables-driven Grid" },
+    { degree: "M.S., Environmental Systems", field: "Energy Systems Engineering", school: "UC Merced", date: "2021 – 2022", note: "Thesis: Impact of EV Charging Schedule on Storage Requirements for a Renewables-driven Grid in California" },
+    { degree: "B.S., Mechanical Engineering", field: "", school: "BUET", date: "2014 – 2018", note: "Bangladesh University of Engineering and Technology" },
   ],
 
   // Wrap words in **double asterisks** to highlight them
@@ -552,10 +585,23 @@ function render() {
 
   $("#timeline").innerHTML = c.journey.map((j, i) => `
     <li class="tl-item fade-up ${i === 0 ? "current" : ""}">
-      <span class="tl-date">${esc(j.date)}</span>
-      <h3>${esc(j.role)} <span class="tl-org">@ ${esc(j.org)}</span></h3>
-      <p>${esc(j.text)}</p>
+      <div class="tl-head">
+        <div>
+          <h3>${esc(j.org)}</h3>
+          <div class="tl-role">${esc(j.role)} <span class="tl-type">${esc(j.type || "")}</span></div>
+        </div>
+        <span class="tl-date">${esc(j.date)}</span>
+      </div>
+      <ul class="tl-points">${(j.points || []).map((pt) => `<li>${esc(pt)}</li>`).join("")}</ul>
     </li>`).join("");
+  $("#edu").innerHTML = (c.education || []).map((e) => `
+    <article class="edu-card fade-up">
+      <span class="tl-date">${esc(e.date)}</span>
+      <h4>${esc(e.degree)}</h4>
+      ${e.field ? `<div class="edu-field">${esc(e.field)}</div>` : ""}
+      <div class="edu-school">${esc(e.school)}</div>
+      ${e.note ? `<p>${esc(e.note)}</p>` : ""}
+    </article>`).join("");
 
   // split on ** so odd segments are bold, then wrap each word for the reveal
   $("#story-body").innerHTML = c.story.map((para) => {
